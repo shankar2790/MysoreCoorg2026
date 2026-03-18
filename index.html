@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a0f1e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Trip 2026">
+<title>Shankar Trip 2026</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#0a0f1e;font-family:system-ui,-apple-system,sans-serif;color:#f1f5f9}
+#root{display:flex;flex-direction:column;height:100vh}
+.topbar{background:#111827;padding:10px 14px 8px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.tb1{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.appname{font-size:14px;font-weight:700}
+.clk{font-size:15px;font-weight:700;font-family:monospace;background:#1e2435;padding:4px 10px;border-radius:8px;letter-spacing:1px}
+.tb2{display:flex;align-items:center;gap:8px}
+.gpsbadge{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px}
+.gpsbadge.on{background:rgba(22,163,74,0.15);color:#4ade80}
+.gpsbadge.off{background:rgba(100,116,139,0.15);color:#94a3b8}
+.gdot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.gpsbadge.on .gdot{animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.nalertbtn{margin-left:auto;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;background:#1e2435;color:#94a3b8;border:none;cursor:pointer;font-family:inherit}
+.nalertbtn.on{background:rgba(22,163,74,0.2);color:#4ade80}
+.tabs{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;background:#111827;border-bottom:1px solid rgba(255,255,255,0.07)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid rgba(255,255,255,0.1);font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:#475569;font-family:inherit;line-height:1.3}
+.tab.act{color:#fff;border-width:2px}
+.abanner{background:rgba(220,38,38,0.15);border-bottom:2px solid rgba(220,38,38,0.4);padding:10px 14px;flex-shrink:0;display:none;align-items:flex-start;gap:10px}
+.abanner.show{display:flex}
+.abtxt{flex:1}
+.abtitle{font-size:12px;font-weight:700;color:#f87171}
+.abbody{font-size:11px;color:#fca5a5;margin-top:2px;line-height:1.4}
+.abx{background:none;border:none;color:#f87171;font-size:20px;cursor:pointer;padding:0;line-height:1;flex-shrink:0}
+.main{flex:1;overflow-y:auto;padding-bottom:70px;-webkit-overflow-scrolling:touch}
+.hero{margin:12px;border-radius:16px;padding:16px;background:#111827;border:1px solid rgba(255,255,255,0.07)}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.dlbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#475569;margin-bottom:3px}
+.dname{font-size:19px;font-weight:900;line-height:1.2}
+.dsub{font-size:11px;color:#64748b;margin-top:4px}
+.kmpill{padding:7px 13px;border-radius:20px;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.prow{display:flex;justify-content:space-between;font-size:11px;color:#475569;margin-bottom:5px}
+.pbar{height:5px;border-radius:3px;background:#1e2435;overflow:hidden}
+.pfill{height:100%;border-radius:3px;transition:width 0.5s}
+.nowcard{margin:0 12px 10px;border-radius:13px;padding:14px 16px;border:2px solid}
+.nowlbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.nowname{font-size:17px;font-weight:900;line-height:1.3}
+.nowsub{font-size:11px;margin-top:3px;opacity:0.75;font-family:monospace}
+.nowdet{font-size:12px;margin-top:8px;line-height:1.5;opacity:0.85}
+.bud{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 4px}
+.bi{background:#111827;border-radius:11px;padding:11px 8px;text-align:center}
+.bival{font-size:14px;font-weight:800;font-family:monospace}
+.bilbl{font-size:10px;color:#475569;margin-top:3px}
+.slbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#475569;margin:14px 14px 8px}
+.alist{margin:0 12px;display:flex;flex-direction:column;gap:6px;margin-bottom:4px}
+.aitem{background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.2);border-radius:10px;padding:10px 12px}
+.ait{font-size:12px;font-weight:700;color:#f87171;margin-bottom:2px}
+.aib{font-size:11px;color:#fca5a5;line-height:1.4}
+.slist{margin:0 12px;display:flex;flex-direction:column}
+.sitem{display:flex;gap:10px}
+.sl{display:flex;flex-direction:column;align-items:center;width:30px;flex-shrink:0}
+.sdot{width:13px;height:13px;border-radius:50%;border:2.5px solid;margin-top:4px;flex-shrink:0}
+.sln{width:2px;flex:1;min-height:18px;background:rgba(255,255,255,0.07);margin-top:2px}
+.sr{flex:1;padding-bottom:14px}
+.stm{font-size:10px;color:#475569;font-family:monospace;margin-bottom:1px}
+.sn{font-size:13px;font-weight:700;line-height:1.3}
+.sd{font-size:11px;color:#64748b;margin-top:2px;line-height:1.4}
+.stags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.stag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:7px}
+.stag.toll{background:rgba(217,119,6,0.2);color:#fbbf24}
+.stag.free{background:rgba(22,163,74,0.2);color:#4ade80}
+.stag.warn{background:rgba(220,38,38,0.2);color:#f87171}
+.stag.info{background:rgba(37,99,235,0.2);color:#60a5fa}
+.stag.rest{background:rgba(100,116,139,0.15);color:#94a3b8}
+.sitem.done .sn{color:#334155}
+.sitem.done .sdot{opacity:0.3}
+.sitem.cur .sn{font-size:14px;font-weight:900}
+.hcards{display:flex;flex-direction:column;gap:8px;margin:0 12px 16px}
+.hcard{background:#111827;border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.07)}
+.hlbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#475569;margin-bottom:4px}
+.hn{font-size:14px;font-weight:800}
+.hm{font-size:11px;color:#64748b;margin-top:2px}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#111827;border-top:1px solid rgba(255,255,255,0.07);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.nb{flex:1;padding:10px 4px 8px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;font-family:inherit}
+.nb svg{width:22px;height:22px;fill:none;stroke:#475569;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nb span{font-size:9px;font-weight:700;color:#475569}
+.nb.act svg{stroke:#f1f5f9}
+.nb.act span{color:#f1f5f9}
+.page{padding:12px}
+.ocard{background:#111827;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.07)}
+.ohdr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.onum{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0}
+.orow{display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.orow:last-child{border-bottom:none}
+.mitem{background:#111827;border-radius:9px;padding:10px 12px;margin-bottom:6px;border-left:3px solid}
+.mtime{font-size:10px;color:#475569;font-family:monospace;margin-bottom:2px}
+.mtxt{font-size:12px;line-height:1.4}
+.scard{background:#111827;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.07)}
+.stitle{font-size:13px;font-weight:800;margin-bottom:12px}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.srow:last-child{border-bottom:none}
+.tog{position:relative;width:46px;height:26px;flex-shrink:0;cursor:pointer}
+.tog input{opacity:0;width:0;height:0;position:absolute}
+.tsl{position:absolute;top:0;left:0;right:0;bottom:0;background:#1e2435;border-radius:26px;transition:0.3s;cursor:pointer}
+.tsl:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#64748b;border-radius:50%;transition:0.3s}
+.tog input:checked+.tsl{background:#7c3aed}
+.tog input:checked+.tsl:before{transform:translateX(20px);background:#fff}
+.ibtn{width:100%;padding:12px;background:#ea580c;color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.instbox{font-size:11px;color:#64748b;line-height:1.6;background:#1e2435;border-radius:8px;padding:10px 12px}
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="topbar">
+    <div class="tb1">
+      <div class="appname">&#128663; Shankar Trip 2026</div>
+      <div class="clk" id="clk">--:--:--</div>
+    </div>
+    <div class="tb2">
+      <div class="gpsbadge off" id="gpsBadge"><div class="gdot"></div><span id="gpsLbl">GPS off</span></div>
+      <button class="nalertbtn" id="nalertbtn" onclick="askNotif()">Enable Alerts</button>
+    </div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="abanner" id="ab">
+    <div class="abtxt"><div class="abtitle" id="abt"></div><div class="abbody" id="abb"></div></div>
+    <button class="abx" onclick="closeAB()">x</button>
+  </div>
+  <div class="main" id="main"></div>
+  <div class="bnav">
+    <button class="nb act" id="bn0" onclick="goTab(0)">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Today</span>
+    </button>
+    <button class="nb" id="bn1" onclick="goTab(1)">
+      <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span>All Days</span>
+    </button>
+    <button class="nb" id="bn2" onclick="goTab(2)">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span id="bn2lbl">Alerts</span>
+    </button>
+    <button class="nb" id="bn3" onclick="goTab(3)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span>Settings</span>
+    </button>
+  </div>
+</div>
+<script>
+var D=[
+{n:1,dt:"Thu Mar 19",nm:"Coimbatore to Mysore",sb:"Burgur Hills - Talakadu - Balmuri - Ranganathittu",km:"264 km",c:"#ea580c",
+ hotel:{y:"Rio Meridien, Mysore",yp:"Rs.4,617 (2 nights + BF)",f:"Hotel Presidency, Mysore",fp:"Rs.740 per night"},
+ al:[{t:"Ugadi Day - Early Start!",b:"Roads near Mysore busy by 8 AM. Depart 4:30 AM SHARP!"},{t:"Karnataka Permit",b:"Pay Rs.550 at border - Day 1 only."},{t:"Cauvery Bath - Skin Sensitive!",b:"Check water first. Ankle-deep only. Rinse with bottled water."},{t:"Ranganathittu Boats Stop 5:30 PM",b:"Reach by 5:00 PM latest or miss the boat!"}],
+ bg:{km:"264",tl:"Rs.375",sp:"Rs.1,400"},
+ st:[
+  {tm:"04:30",nm:"Depart Coimbatore",dt:"Kids sleep in car. NH-544 clear at 4:30 AM.",tg:[{l:"Permit Rs.550",c:"toll"},{l:"Hill Rs.300",c:"toll"}]},
+  {tm:"08:00",nm:"Burgur Hills Viewpoint",dt:"45 min stretch. Photos. Kids run around.",tg:[{l:"Free entry",c:"free"},{l:"45 min",c:"rest"}]},
+  {tm:"09:00",nm:"Tea break - highway dhaba",dt:"Driver tea and snack. 15 min.",tg:[{l:"Break",c:"rest"},{l:"~Rs.80",c:""}]},
+  {tm:"10:30",nm:"Talakadu Sand Dunes and Temple",dt:"1500-year-old sand-buried temples. Kids love the sand. Cauvery bath nearby - check water first!",tg:[{l:"Rs.50 adult",c:"toll"},{l:"Kids FREE",c:"free"},{l:"2 hours",c:"rest"}]},
+  {tm:"12:30",nm:"Lunch - home packed at Talakadu",dt:"Eat near Cauvery bank. Kids nap in AC car.",tg:[{l:"Home packed",c:"free"},{l:"30 min rest",c:"rest"}]},
+  {tm:"14:00",nm:"Balmuri and Yedamuri Falls",dt:"Fish fry + 2 beers. EAT FULLY FIRST then beer slowly. Driver rest 2.5 hours!",tg:[{l:"Rs.30 adult",c:"toll"},{l:"Driver rest 2.5hr",c:"rest"},{l:"Fish FIRST!",c:"warn"}]},
+  {tm:"17:00",nm:"Ranganathittu Bird Sanctuary",dt:"March = nesting season! Best time. One boat ride. Boats stop 5:30 PM sharp!",tg:[{l:"Rs.75 + Rs.100 boat",c:"toll"},{l:"Boats stop 5:30!",c:"warn"}]},
+  {tm:"20:00",nm:"Dinner near Rio Meridien",dt:"Udupi darshini. Light meal. Simple food for tired kids.",tg:[{l:"~Rs.120/head",c:""}]},
+  {tm:"21:30",nm:"Check-in Rio Meridien Mysore",dt:"Night 1 and 2. Breakfast included. FIL at Hotel Presidency nearby.",tg:[{l:"Booked",c:"free"},{l:"BF included",c:"info"}]},
+ ]},
+{n:2,dt:"Fri Mar 20",nm:"Full Day Mysore",sb:"Chamundi - Palace - Zoo - Hotel Rest - Brindavan - Illumination",km:"66 km",c:"#7c3aed",
+ hotel:{y:"Rio Meridien Night 2",yp:"Included - same hotel",f:"Hotel Presidency Night 2",fp:"Rs.740"},
+ al:[{t:"No Hill Charge at Chamundi!",b:"City limit road - zero hill charge today!"},{t:"Arrive Chamundi 7:30 AM",b:"Ugadi holiday - crowd explodes after 9 AM!"},{t:"Both Kids FREE at Palace",b:"Below 10 years - both children free!"},{t:"Brindavan enter by 6:00 PM",b:"Ugadi = full 2-hour show 6:30-8:30 PM!"}],
+ bg:{km:"66",tl:"Rs.100",sp:"Rs.1,800"},
+ st:[
+  {tm:"07:00",nm:"Breakfast - Rio Meridien buffet FREE",dt:"Included. Kids eat well.",tg:[{l:"FREE included",c:"free"}]},
+  {tm:"07:30",nm:"Chamundi Hills Temple",dt:"NO hill charge - city limit! Cool morning. Nandi statue. Go before 9 AM.",tg:[{l:"Free entry",c:"free"},{l:"No hill charge!",c:"info"}]},
+  {tm:"09:00",nm:"GTR Restaurant - Benne Masala Dosa",dt:"Famous since 1950s! Driver eats - family pays. Rs.80-100.",tg:[{l:"Rs.80-100/head",c:""},{l:"Driver meal",c:"info"}]},
+  {tm:"10:00",nm:"Mysore Palace",dt:"Opens 10 AM. Gold halls, jewelled throne. BOTH KIDS FREE below 10 years!",tg:[{l:"Rs.120 adult",c:"toll"},{l:"Kids FREE!",c:"free"},{l:"Driver rest 2hr",c:"rest"}]},
+  {tm:"12:30",nm:"Mysore Zoo",dt:"150+ species! Tigers, giraffes, hippos. Battery vehicle inside for toddlers.",tg:[{l:"Rs.80 adult",c:"toll"},{l:"2.5yr FREE",c:"free"},{l:"Driver rest 1.5hr",c:"rest"}]},
+  {tm:"14:00",nm:"Lunch - Dasaprakash Restaurant",dt:"Pure veg Mysore thali. AC rest in 34C heat. Full one hour break.",tg:[{l:"Rs.100-150/head",c:""}]},
+  {tm:"15:30",nm:"HOTEL REST - 2 hours",dt:"Kids nap. Escape heat. Use pool. Driver rests too. Resume 5:30 PM.",tg:[{l:"Driver rest 2hr",c:"rest"},{l:"Till 5:30 PM",c:"info"}]},
+  {tm:"17:30",nm:"Devaraja Market - Mysore Pak",dt:"Guru Sweet Mart Est 1935 - where Mysore Pak was invented! Buy 250g minimum.",tg:[{l:"Rs.400/kg",c:""},{l:"Buy 250g min",c:"info"}]},
+  {tm:"18:00",nm:"Brindavan Gardens KRS Dam",dt:"Ugadi = FULL 2-hour show 6:30-8:30 PM! Rs.100 includes entry + parking.",tg:[{l:"Rs.100 incl parking",c:"toll"},{l:"Enter by 6 PM!",c:"warn"}]},
+  {tm:"20:45",nm:"Mysore Palace Illumination",dt:"97,000 bulbs! FREE from Shiva Road east side. Guaranteed on Ugadi.",tg:[{l:"FREE view",c:"free"},{l:"Shiva Road east",c:"info"}]},
+  {tm:"21:30",nm:"Dinner + Night 2",dt:"Same hotel. Best whiskey night - no early start tomorrow! Pack Coorg bags.",tg:[{l:"Pack bags!",c:"warn"}]},
+ ]},
+{n:3,dt:"Sat Mar 21",nm:"Mysore to Coorg",sb:"Somanathapura - Nisargadhama - Golden Temple - Dubare - Rajaseat",km:"186 km",c:"#059669",
+ hotel:{y:"Jungle Hill Resort, Madikeri",yp:"Rs.3,551 Booked",f:"Serenity Greens, Madikeri",fp:"Rs.881 PAID - No cancellation! Cash only."},
+ al:[{t:"Somanathapura last 3 km!",b:"Single-lane road. Drive slow, horn every bend!"},{t:"Dubare last 5 km forest track",b:"Rough road. Elephants can cross! Drive very slow."},{t:"Serenity Greens - Cash only!",b:"Pay Rs.881 cash. Contact: 9945619609. ID: NH27132471826410"},{t:"Saturday Bonfire",b:"Confirm bonfire with Jungle Hill Resort on arrival!"}],
+ bg:{km:"186",tl:"Rs.140",sp:"Rs.1,600"},
+ st:[
+  {tm:"07:00",nm:"Breakfast + Checkout Rio Meridien",dt:"Last free buffet. Pack bags. FIL checks out of Presidency.",tg:[{l:"Free BF",c:"free"},{l:"Checkout",c:"warn"}]},
+  {tm:"07:45",nm:"Somanathapura Temple UNESCO",dt:"1268 AD. 217 carvings. Morning light = best photos of trip!",tg:[{l:"Rs.25 adult",c:"toll"},{l:"Kids FREE",c:"free"},{l:"1.5 hours",c:"rest"}]},
+  {tm:"09:30",nm:"Nisargadhama Island - Rope Bridge!",dt:"Kids go crazy on rope bridge! Deer and peacocks roam free.",tg:[{l:"Rs.100 family",c:"toll"},{l:"1 hour",c:"rest"}]},
+  {tm:"10:15",nm:"Tea break - highway",dt:"10 min only.",tg:[{l:"Break",c:"rest"}]},
+  {tm:"11:00",nm:"Golden Temple Bylakuppe",dt:"World's largest Tibetan settlement outside Tibet! Tibetan momos inside.",tg:[{l:"FREE entry",c:"free"},{l:"Driver: visit!",c:"info"}]},
+  {tm:"12:30",nm:"Dubare Elephant Camp",dt:"Watch FREE from bank. Baby elephants! Forest track last 5 km. Driver rest 1.5 hrs.",tg:[{l:"Free watching",c:"free"},{l:"Driver rest 1.5hr",c:"rest"},{l:"Forest track!",c:"warn"}]},
+  {tm:"14:00",nm:"Lunch - Kushalnagar bus stand",dt:"Akki Roti + Koli Saaru. Driver eats - family pays.",tg:[{l:"Rs.80-100/head",c:""}]},
+  {tm:"16:00",nm:"Harangi Dam backwaters",dt:"Scenic backwaters. Boating Rs.50 optional.",tg:[{l:"Free entry",c:"free"},{l:"45 min",c:"rest"}]},
+  {tm:"17:30",nm:"Rajaseat Sunset Point Madikeri",dt:"Coorg famous sunset. Kids run on lawns. First Coorg cool breeze!",tg:[{l:"Rs.30 adult",c:"toll"},{l:"Arrive 5:30 sharp!",c:"warn"}]},
+  {tm:"20:00",nm:"Dinner - Coorg Cuisine Madikeri",dt:"Koli Curry + Kadambuttu + Neer Dosa. First real Coorg meal!",tg:[{l:"Rs.120-180/head",c:""}]},
+  {tm:"20:30",nm:"Check-in Jungle Hill Resort + Bonfire!",dt:"FIL + Muthu anna at Serenity Greens ID:NH27132471826410 Ph:9945619609. Bonfire night!",tg:[{l:"Booked",c:"free"},{l:"Bonfire!",c:"info"}]},
+ ]},
+{n:4,dt:"Sun Mar 22",nm:"Coorg Circuit to Masinagudi",sb:"Talakaveri - Abbey Falls - Bandipur Drive - Tiger Paw",km:"228 km",c:"#db2777",
+ hotel:{y:"Tiger Paw Resort, Masinagudi",yp:"Rs.3,404 Booked",f:"Local homestay near Tiger Paw",fp:"~Rs.500-800 cash on arrival"},
+ al:[{t:"Talakaveri Road - STEEPEST!",b:"AC OFF. Low gear always. Horn every bend. 15-20 kmph max!"},{t:"FUEL at Gundlupet - MANDATORY!",b:"No petrol inside Bandipur forest. Fill full tank!"},{t:"Bandipur Strict Rules",b:"20 kmph. NO HONKING. Windows open. AC off. Stay in car!"},{t:"Call Tiger Paw from Gundlupet",b:"Ask them to keep dinner ready for 7:30-8:00 PM arrival."}],
+ bg:{km:"228",tl:"Rs.135",sp:"Rs.1,500"},
+ st:[
+  {tm:"07:30",nm:"Breakfast + Checkout Jungle Hill",dt:"Last free buffet. Kids final play. FIL checks out Serenity Greens.",tg:[{l:"Free BF",c:"free"},{l:"Checkout",c:"warn"}]},
+  {tm:"08:30",nm:"Misty ghat drive to Bagamandala",dt:"Most scenic drive of trip! Morning fog in coffee estate valleys. Headlights on.",tg:[{l:"Forest check Rs.50",c:"toll"},{l:"Headlights on!",c:"warn"}]},
+  {tm:"09:30",nm:"Bagamandala - 3 Rivers Confluence",dt:"Cauvery + Kannike + Sujyothi rivers meeting. Sacred temple.",tg:[{l:"Free entry",c:"free"},{l:"Rs.20 parking",c:"toll"}]},
+  {tm:"10:30",nm:"Talakaveri - Source of Cauvery 1276m!",dt:"Birthplace of Cauvery river. Cool mist. Kids feel 1276m altitude!",tg:[{l:"Free entry",c:"free"},{l:"STEEPEST ROAD!",c:"warn"}]},
+  {tm:"11:30",nm:"Snack break near Talakaveri",dt:"Prasadam + groundnuts. 15 min.",tg:[{l:"Break",c:"rest"},{l:"Rs.50",c:""}]},
+  {tm:"12:30",nm:"Abbey Falls - 70 ft waterfall!",dt:"Most spectacular waterfall of trip. Easy 10 min walk. Kid-safe platform.",tg:[{l:"Rs.15/person",c:"toll"},{l:"Must see!",c:"info"}]},
+  {tm:"14:00",nm:"Lunch - East End Hotel Madikeri Est 1940s",dt:"Oldest restaurant in Coorg! Kodava Thali. Buy Coorg coffee powder here!",tg:[{l:"Rs.120-180/head",c:""},{l:"Buy Coorg coffee!",c:"info"}]},
+  {tm:"15:15",nm:"Omkareshwara Temple + fish feeding",dt:"Kids feed giant fish in lake - absolute favourite moment! Fish food Rs.10.",tg:[{l:"Free entry",c:"free"},{l:"Fish food Rs.10",c:""}]},
+  {tm:"16:30",nm:"Drive - Madikeri to Gundlupet",dt:"Via Hunsur and Gundlupet. NH-275 + NH-181. 105 km. Kids nap.",tg:[{l:"Gundlupet toll Rs.85",c:"toll"}]},
+  {tm:"17:30",nm:"FUEL STOP Gundlupet - MANDATORY!",dt:"Fill FULL tank. Last fuel before Bandipur! Driver tea break. Call Tiger Paw now.",tg:[{l:"MANDATORY FUEL!",c:"warn"},{l:"15 min break",c:"rest"},{l:"Call Tiger Paw",c:"warn"}]},
+  {tm:"18:30",nm:"Bandipur Dusk Wildlife Drive - FREE!",dt:"Golden hour! Elephants, deer, gaur roadside. 20 kmph. Windows open. AC OFF!",tg:[{l:"FREE public road",c:"free"},{l:"20 kmph only!",c:"warn"}]},
+  {tm:"19:30",nm:"Check-in Tiger Paw Resort Masinagudi",dt:"Balcony + mountain view! FIL + Muthu anna find local homestay near resort.",tg:[{l:"Booked",c:"free"},{l:"Balcony view!",c:"info"}]},
+ ]},
+{n:5,dt:"Mon Mar 23",nm:"Masinagudi to Home!",sb:"36 Hairpins - Kotagiri - Coonoor - Mettupalayam - Coimbatore",km:"225 km",c:"#2563eb",
+ hotel:{y:"HOME - Coimbatore! Trip done!",yp:"969 km - 5 days - Lifetime memories!",f:"Trip complete!",fp:"Pay Muthu Anna tip Rs.500-1000!"},
+ al:[{t:"36 Hairpin Bends - Kallatti Road",b:"AC OFF. Low gear. Horn every curve. 15-20 kmph. Never stop on a bend!"},{t:"Coonoor Downhill - 28 km steep",b:"Engine brake only - do NOT ride brake pedal. It will overheat!"},{t:"Pay Muthu Anna",b:"Full balance + tip Rs.500-1000. 5 days, 969 km, excellent driving!"}],
+ bg:{km:"225",tl:"Rs.75",sp:"Rs.1,400"},
+ st:[
+  {tm:"05:30",nm:"Dawn wildlife walk Masinagudi",dt:"Deer on Tiger Paw property! Walk hotel grounds. Driver rests.",tg:[{l:"FREE",c:"free"},{l:"Deer on property!",c:"info"}]},
+  {tm:"07:30",nm:"Breakfast + Checkout Tiger Paw",dt:"Last resort breakfast. Kids final play. Checkout.",tg:[{l:"Free BF",c:"free"},{l:"Checkout",c:"warn"}]},
+  {tm:"09:00",nm:"36 Hairpin Bends - Kallatti Road!",dt:"Climb from 900m to 2240m! Kids count bends. Temperature drops 26C to 18C!",tg:[{l:"No toll",c:"free"},{l:"AC OFF + low gear!",c:"warn"}]},
+  {tm:"10:00",nm:"Ooty to Kotagiri - pass through",dt:"Do not stop in Ooty - already visited. Drive straight to fresh Kotagiri.",tg:[{l:"29 km drive",c:"info"}]},
+  {tm:"11:00",nm:"Tea stop + Nilgiri Tea Powder!",dt:"Buy tea powder at Kotagiri market. Rs.80-120/pack. Best price at source!",tg:[{l:"Buy tea powder!",c:"info"},{l:"20 min",c:"rest"}]},
+  {tm:"11:30",nm:"Kodanad Viewpoint - FIRST TIME!",dt:"See Rangeswamy Peak + Dolphin Nose + Catherine Falls from ONE point!",tg:[{l:"Rs.30/person",c:"toll"},{l:"First time!",c:"info"}]},
+  {tm:"12:15",nm:"Catherine Falls - 250 ft double waterfall!",dt:"2nd largest in Nilgiris. Two cascades. Never visited before!",tg:[{l:"Nominal fee",c:"toll"},{l:"First time!",c:"info"}]},
+  {tm:"13:00",nm:"Lunch - Kotagiri town",dt:"South Indian thali. Driver eats - family pays.",tg:[{l:"Rs.80-120/head",c:""}]},
+  {tm:"14:30",nm:"Dolphin Nose Viewpoint Coonoor",dt:"Iconic sheer-drop viewpoint. Can see Catherine Falls from opposite side!",tg:[{l:"Rs.30/person",c:"toll"},{l:"First time!",c:"info"}]},
+  {tm:"16:00",nm:"Sims Park Coonoor",dt:"Botanical garden. Kids final run! Boating on small pond. Perfect last stop.",tg:[{l:"Rs.30/person",c:"toll"},{l:"First time!",c:"info"}]},
+  {tm:"17:00",nm:"Tea factory - souvenir Nilgiri tea",dt:"Best quality tea at factory price. Perfect souvenir.",tg:[{l:"Rs.80-120/pack",c:""},{l:"15 min",c:"rest"}]},
+  {tm:"18:00",nm:"Depart Coonoor to Mettupalayam",dt:"28 km STEEP downhill. Engine brake! Low gear. Do NOT ride brakes.",tg:[{l:"Steep downhill!",c:"warn"}]},
+  {tm:"19:15",nm:"Dinner + Toilet break Mettupalayam",dt:"IMPORTANT: Toilet break for kids before final 42 km home run!",tg:[{l:"Rs.80-120/head",c:""},{l:"Kids toilet!",c:"warn"}]},
+  {tm:"20:00",nm:"Mettupalayam to Coimbatore NH-67",dt:"Flat 4-lane highway. Easy final stretch. Kids likely sleeping.",tg:[{l:"Kaniyur toll Rs.75",c:"toll"}]},
+  {tm:"21:30",nm:"HOME! TRIP COMPLETE! 969 km!",dt:"5 days - 20+ places - Entire family safe - Lifetime memories! Pay Muthu Anna!",tg:[{l:"PAY MUTHU ANNA!",c:"warn"},{l:"TRIP DONE!",c:"info"}]},
+ ]},
+];
+var AD=0,TAB=0;
+var msgs=JSON.parse(localStorage.getItem("tm")||"[]");
+var cfg=JSON.parse(localStorage.getItem("tc")||'{"gps":true,"time":true}');
+var wid=null,gpsOk=false,lastLK="",lastTK="",dip=null;
+
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();dip=e;});
+
+function tick(){
+  var n=new Date();
+  document.getElementById("clk").textContent=pad(n.getHours())+":"+pad(n.getMinutes())+":"+pad(n.getSeconds());
+}
+function pad(x){return String(x).padStart(2,"0");}
+setInterval(tick,1000);tick();
+
+function autoDay(){
+  var n=new Date();
+  if(n.getFullYear()===2026&&n.getMonth()===2){var d=n.getDate();if(d>=19&&d<=23){AD=d-19;return;}}
+  AD=0;
+}
+
+function curIdx(stops){
+  var n=new Date(),hm=n.getHours()*60+n.getMinutes(),last=-1;
+  stops.forEach(function(s,i){var p=s.tm.split(":");if(parseInt(p[0])*60+parseInt(p[1])<=hm)last=i;});
+  return last;
+}
+
+function showBanner(title,body){
+  document.getElementById("abt").textContent=title;
+  document.getElementById("abb").textContent=body;
+  document.getElementById("ab").classList.add("show");
+  addMsg(title+": "+body,"#f87171");
+  doNotif(title,body);
+}
+function closeAB(){document.getElementById("ab").classList.remove("show");}
+
+function doNotif(t,b){
+  if(window.Notification&&Notification.permission==="granted"){
+    try{new Notification(t,{body:b});}catch(e){}
+  }
+}
+
+function addMsg(txt,col){
+  var n=new Date();
+  msgs.unshift({txt:txt,col:col||"#ea580c",t:pad(n.getHours())+":"+pad(n.getMinutes()),d:n.toLocaleDateString()});
+  if(msgs.length>60)msgs.pop();
+  localStorage.setItem("tm",JSON.stringify(msgs));
+  var l=document.getElementById("bn2lbl");
+  if(l)l.textContent=msgs.length>0?"Alerts ("+msgs.length+")":"Alerts";
+}
+
+function km(la1,lo1,la2,lo2){
+  var R=6371,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180;
+  var a=Math.sin(dL/2)*Math.sin(dL/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)*Math.sin(dO/2);
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function startGPS(){
+  if(!navigator.geolocation)return;
+  wid=navigator.geolocation.watchPosition(function(pos){
+    gpsOk=true;
+    var b=document.getElementById("gpsBadge");b.className="gpsbadge on";
+    document.getElementById("gpsLbl").textContent="GPS "+Math.round(pos.coords.accuracy)+"m";
+    checkLoc(pos.coords.latitude,pos.coords.longitude);
+  },function(){
+    gpsOk=false;
+    var b=document.getElementById("gpsBadge");b.className="gpsbadge off";
+    document.getElementById("gpsLbl").textContent="GPS off";
+  },{enableHighAccuracy:true,timeout:15000,maximumAge:20000});
+}
+function stopGPS(){
+  if(wid!=null){navigator.geolocation.clearWatch(wid);wid=null;}
+  gpsOk=false;
+  document.getElementById("gpsBadge").className="gpsbadge off";
+  document.getElementById("gpsLbl").textContent="GPS off";
+}
+
+function checkLoc(lat,lng){
+  if(!cfg.gps)return;
+  var stops=D[AD].st;
+  stops.forEach(function(s){
+    if(!s.la)return;
+    var d=km(lat,lng,s.la,s.lo),k=AD+"-"+s.nm;
+    if(d<1.5&&lastLK!==k){lastLK=k;showBanner("Near: "+s.nm,s.dt.substring(0,80));}
+  });
+  if(km(lat,lng,11.813,76.689)<2){var k="fuel-g";if(lastLK!==k){lastLK=k;showBanner("FUEL STOP - Gundlupet!","Fill full tank NOW! No petrol in Bandipur forest!");}}
+  if(km(lat,lng,11.671,76.628)<3){var k="bpf";if(lastLK!==k){lastLK=k;showBanner("Entering Bandipur Forest!","20 kmph. NO HONKING. Windows open. AC off. Stay in car!");}}
+}
+
+function checkTime(){
+  if(!cfg.time)return;
+  var n=new Date(),hm=n.getHours()*100+n.getMinutes();
+  var stops=D[AD].st;
+  stops.forEach(function(s){
+    var p=s.tm.split(":"),st=parseInt(p[0])*100+parseInt(p[1]),k=AD+"-"+s.tm;
+    if(hm>=st&&hm<=st+4&&lastTK!==k){lastTK=k;showBanner("Time: "+s.nm,s.dt.substring(0,80));}
+  });
+  if(AD===0&&hm>=400&&hm<=404&&lastTK!=="d1d"){lastTK="d1d";showBanner("Depart Coimbatore NOW!","4:30 AM - time to leave!");}
+  if(AD===1&&hm>=1755&&hm<=1759&&lastTK!=="d2b"){lastTK="d2b";showBanner("Leave for Brindavan NOW!","Must enter before 6:00 PM!");}
+  if(AD===0&&hm>=1625&&hm<=1629&&lastTK!=="d1r"){lastTK="d1r";showBanner("Ranganathittu!","Boats stop 5:30 PM - leave Balmuri now!");}
+}
+
+setInterval(function(){checkTime();if(TAB===0)renderToday();},30000);
+
+async function askNotif(){
+  if(!window.Notification){addMsg("Notifications not supported.","#f87171");return;}
+  var p=await Notification.requestPermission();
+  if(p==="granted"){
+    document.getElementById("nalertbtn").textContent="Alerts ON";
+    document.getElementById("nalertbtn").classList.add("on");
+    addMsg("Alerts enabled! You will get notifications at key stops.","#4ade80");
+  } else {
+    addMsg("Permission denied. Enable in Settings > App > Notifications.","#f87171");
+  }
+}
+
+function renderTabs(){
+  document.getElementById("tabs").innerHTML=D.map(function(d,i){
+    return "<button class=\"tab"+(i===AD?" act":"")+"\" style=\""+(i===AD?"background:"+d.c+";border-color:"+d.c:"color:#475569")+"\" onclick=\"selDay("+i+")\">Day "+d.n+"<br><span style=\"font-size:9px;opacity:0.75\">"+d.dt+"</span></button>";
+  }).join("");
+}
+function selDay(i){AD=i;renderTabs();if(TAB===0)renderToday();}
+
+function renderToday(){
+  var d=D[AD],cur=curIdx(d.st),c=d.c;
+  var prog=d.st.length>0?Math.round(((cur+1)/d.st.length)*100):0;
+  var h="";
+  h+="<div class=\"hero\"><div class=\"hero-top\"><div><div class=\"dlbl\">Day "+d.n+" - "+d.dt+"</div><div class=\"dname\" style=\"color:"+c+"\">"+d.nm+"</div><div class=\"dsub\">"+d.sb+"</div></div><div class=\"kmpill\" style=\"background:"+c+"\">"+d.km+"</div></div><div class=\"prow\"><span>"+(cur<0?"Not started yet":(cur+1)+" of "+d.st.length+" stops")+"</span><span style=\"color:"+c+"\">"+(prog>0?prog+"%":"")+"</span></div><div class=\"pbar\"><div class=\"pfill\" style=\"width:"+prog+"%;background:"+c+"\"></div></div></div>";
+  if(cur>=0){var s=d.st[cur];h+="<div class=\"nowcard\" style=\"border-color:"+c+";background:"+c+"18\"><div class=\"nowlbl\" style=\"color:"+c+"\">Current Stop</div><div class=\"nowname\" style=\"color:"+c+"\">"+s.nm+"</div><div class=\"nowsub\">"+s.tm+" - "+(gpsOk?"GPS matched":"Time based")+"</div><div class=\"nowdet\">"+s.dt+"</div></div>";}
+  h+="<div class=\"slbl\">Today budget</div><div class=\"bud\"><div class=\"bi\"><div class=\"bival\" style=\"color:"+c+"\">"+d.bg.km+"</div><div class=\"bilbl\">km</div></div><div class=\"bi\"><div class=\"bival\" style=\"color:"+c+"\">"+d.bg.tl+"</div><div class=\"bilbl\">tolls</div></div><div class=\"bi\"><div class=\"bival\" style=\"color:"+c+"\">"+d.bg.sp+"</div><div class=\"bilbl\">spend</div></div></div>";
+  h+="<div class=\"slbl\">Alerts</div><div class=\"alist\">";
+  d.al.forEach(function(a){h+="<div class=\"aitem\"><div class=\"ait\">"+a.t+"</div><div class=\"aib\">"+a.b+"</div></div>";});
+  h+="</div>";
+  h+="<div class=\"slbl\">All stops today</div><div class=\"slist\">";
+  d.st.forEach(function(s,i){
+    var done=i<cur,isc=i===cur;
+    h+="<div class=\"sitem"+(done?" done":"")+(isc?" cur":"")+"\">";
+    h+="<div class=\"sl\"><div class=\"sdot\" style=\"background:"+(isc?c:done?"rgba(255,255,255,0.12)":"transparent")+";border-color:"+(isc?c:done?"rgba(255,255,255,0.15)":c+"44")+"\"></div>";
+    if(i<d.st.length-1)h+="<div class=\"sln\" style=\""+(isc||done?"background:"+c+"33":"")+"\"></div>";
+    h+="</div><div class=\"sr\"><div class=\"stm\">"+s.tm+"</div><div class=\"sn\" style=\""+(isc?"color:"+c:"")+"\">"+s.nm+"</div><div class=\"sd\">"+s.dt+"</div>";
+    if(s.tg.length){h+="<div class=\"stags\">";s.tg.forEach(function(t){h+="<span class=\"stag "+(t.c||"")+"\">"+t.l+"</span>";});h+="</div>";}
+    h+="</div></div>";
+  });
+  h+="</div>";
+  h+="<div class=\"slbl\">Tonight stay</div><div class=\"hcards\"><div class=\"hcard\"><div class=\"hlbl\">Your Family</div><div class=\"hn\" style=\"color:"+c+"\">"+d.hotel.y+"</div><div class=\"hm\">"+d.hotel.yp+"</div></div><div class=\"hcard\"><div class=\"hlbl\">FIL + Muthu Anna</div><div class=\"hn\" style=\"color:"+c+"\">"+d.hotel.f+"</div><div class=\"hm\">"+d.hotel.fp+"</div></div></div>";
+  document.getElementById("main").innerHTML=h;
+}
+
+function renderAll(){
+  var h="<div class=\"page\">";
+  D.forEach(function(d){
+    h+="<div class=\"ocard\"><div class=\"ohdr\"><div class=\"onum\" style=\"background:"+d.c+"\">0"+d.n+"</div><div><div style=\"font-size:13px;font-weight:800;color:"+d.c+"\">"+d.nm+"</div><div style=\"font-size:11px;color:#64748b\">"+d.dt+" - "+d.km+"</div></div></div>";
+    h+="<div class=\"orow\"><span style=\"color:#64748b\">Stops</span><span style=\"font-weight:700\">"+d.st.length+" places</span></div>";
+    h+="<div class=\"orow\"><span style=\"color:#64748b\">Tolls</span><span style=\"font-weight:700\">"+d.bg.tl+"</span></div>";
+    h+="<div class=\"orow\"><span style=\"color:#64748b\">Budget</span><span style=\"font-weight:700\">"+d.bg.sp+"</span></div>";
+    h+="<div class=\"orow\"><span style=\"color:#64748b\">Your hotel</span><span style=\"font-weight:700\">"+d.hotel.y+"</span></div>";
+    h+="<div class=\"orow\"><span style=\"color:#64748b\">FIL + Driver</span><span style=\"font-weight:700\">"+d.hotel.f+"</span></div></div>";
+  });
+  h+="<div class=\"ocard\" style=\"border-color:rgba(124,58,237,0.3)\"><div style=\"font-size:13px;font-weight:800;color:#a78bfa;margin-bottom:10px\">All Bookings Confirmed</div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Rio Meridien Mysore (2 nights)</span><span style=\"color:#4ade80;font-weight:700\">Rs.4,617</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Hotel Presidency (FIL 2 nights)</span><span style=\"color:#4ade80;font-weight:700\">Rs.1,480</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Jungle Hill Resort Madikeri</span><span style=\"color:#4ade80;font-weight:700\">Rs.3,551</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Serenity Greens (FIL - PAID)</span><span style=\"color:#4ade80;font-weight:700\">Rs.881 PAID</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Tiger Paw Resort Masinagudi</span><span style=\"color:#4ade80;font-weight:700\">Rs.3,404</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Serenity Greens ID</span><span style=\"font-weight:700\">NH27132471826410</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Serenity Contact</span><span style=\"font-weight:700\">9945619609</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Grand Total</span><span style=\"color:#4ade80;font-weight:700\">~Rs.44,762</span></div></div></div>";
+  document.getElementById("main").innerHTML=h;
+}
+
+function renderMsgs(){
+  var h="<div class=\"page\"><div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:12px\"><div style=\"font-size:14px;font-weight:800\">Alert Messages ("+msgs.length+")</div><button onclick=\"clearMsgs()\" style=\"font-size:11px;color:#475569;background:none;border:none;cursor:pointer;font-family:inherit\">Clear all</button></div>";
+  if(!msgs.length){h+="<div style=\"font-size:12px;color:#475569;text-align:center;padding:24px;background:#111827;border-radius:10px\">No alerts yet. GPS and time-based alerts will appear here.</div>";}
+  else{msgs.forEach(function(m){h+="<div class=\"mitem\" style=\"border-left-color:"+m.col+"\"><div class=\"mtime\">"+m.t+" - "+m.d+"</div><div class=\"mtxt\">"+m.txt+"</div></div>";});}
+  h+="</div>";
+  document.getElementById("main").innerHTML=h;
+}
+function clearMsgs(){msgs=[];localStorage.setItem("tm","[]");var l=document.getElementById("bn2lbl");if(l)l.textContent="Alerts";renderMsgs();}
+
+function renderSet(){
+  var h="<div class=\"page\">";
+  h+="<div class=\"scard\"><div class=\"stitle\">Alert Settings</div>";
+  h+="<div class=\"srow\"><div><div style=\"font-size:13px\">GPS Location Alerts</div><div style=\"font-size:11px;color:#64748b\">Alert when near each stop</div></div><label class=\"tog\"><input type=\"checkbox\" "+(cfg.gps?"checked":"")+" onchange=\"setSetting('gps',this.checked)\"><div class=\"tsl\"></div></label></div>";
+  h+="<div class=\"srow\"><div><div style=\"font-size:13px\">Time-Based Alerts</div><div style=\"font-size:11px;color:#64748b\">Alert at scheduled times</div></div><label class=\"tog\"><input type=\"checkbox\" "+(cfg.time?"checked":"")+" onchange=\"setSetting('time',this.checked)\"><div class=\"tsl\"></div></label></div>";
+  h+="<div class=\"srow\"><div><div style=\"font-size:13px\">Push Notifications</div><div style=\"font-size:11px;color:#64748b\">Alerts when screen off</div></div><button onclick=\"askNotif()\" style=\"font-size:12px;padding:5px 12px;border-radius:8px;background:#1e2435;color:"+(window.Notification&&Notification.permission==="granted"?"#4ade80":"#94a3b8")+";border:1px solid rgba(255,255,255,0.1);cursor:pointer;font-family:inherit\">"+(window.Notification&&Notification.permission==="granted"?"Enabled":"Enable")+"</button></div></div>";
+  h+="<div class=\"scard\"><div class=\"stitle\">Install as App</div><button class=\"ibtn\" onclick=\"doInstall()\">Install on Home Screen</button><div class=\"instbox\">Android Chrome: Tap (3 dots) menu then Add to Home Screen<br><br>iPhone Safari: Tap Share button then Add to Home Screen<br><br>Works offline once installed - no internet needed in forest areas!</div></div>";
+  h+="<div class=\"scard\"><div class=\"stitle\">Key Details</div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Trip dates</span><span style=\"font-weight:700\">Mar 19-23, 2026</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Driver</span><span style=\"font-weight:700\">Muthu Anna - Rs.18,500</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Total distance</span><span style=\"font-weight:700\">969 km</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Serenity Greens ID</span><span style=\"font-weight:700\">NH27132471826410</span></div>";
+  h+="<div class=\"orow\"><span style=\"color:#64748b\">Serenity contact</span><span style=\"font-weight:700\">9945619609</span></div></div></div>";
+  document.getElementById("main").innerHTML=h;
+}
+
+function setSetting(k,v){
+  cfg[k]=v;localStorage.setItem("tc",JSON.stringify(cfg));
+  if(k==="gps"){if(v)startGPS();else stopGPS();}
+}
+
+function doInstall(){
+  if(dip){dip.prompt();dip.userChoice.then(function(r){if(r.outcome==="accepted")addMsg("App installed!","#4ade80");dip=null;});}
+  else{addMsg("Tap browser menu (3 dots) then Add to Home Screen","#60a5fa");alert("To install:\n\nAndroid: Tap the 3-dot menu, then Add to Home Screen\n\niPhone: Tap the Share button, then Add to Home Screen");}
+}
+
+function goTab(i){
+  TAB=i;
+  ["bn0","bn1","bn2","bn3"].forEach(function(id,j){document.getElementById(id).className="nb"+(j===i?" act":"");});
+  if(i===0)renderToday();else if(i===1)renderAll();else if(i===2)renderMsgs();else renderSet();
+}
+
+if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(function(){});}
+autoDay();renderTabs();renderToday();
+var l=document.getElementById("bn2lbl");if(l&&msgs.length>0)l.textContent="Alerts ("+msgs.length+")";
+if(cfg.gps)startGPS();
+if(window.Notification&&Notification.permission==="granted"){document.getElementById("nalertbtn").textContent="Alerts ON";document.getElementById("nalertbtn").classList.add("on");}
+</script>
+</body>
+</html>
